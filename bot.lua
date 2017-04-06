@@ -2979,7 +2979,7 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
             redis:del('bot:banned:megacreed'..msg.chat_id_)
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-	   if (msg.content_.text_:match("^[Cc]lean gbanlist$") or msg.content_.text_:match("^پاکسازی بن گلوبال ها$")) and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_sudo(msg) then
+	   if (msg.content_.text_:match("^[Cc]lean gbanlist$") or msg.content_.text_:match("^پاکسازی بن گلوبال ها$")) and is_sudo(msg) then
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Global Ban List Has been Cleaned !*'
             else
