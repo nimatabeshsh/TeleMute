@@ -1620,8 +1620,7 @@ if msg.content_.text_ then
             if  redis:sismember('groups:megacreed',chat_id) then
               return sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'html')
             end
-            sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..'یک گروه به
-لیست من اضافه کرد🙄', 1, 'html')
+            sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..'یک گروه بهلیست من اضافه کرد🙄', 1, 'html')
             redis:sadd('groups:megacreed',chat_id)
             redis:set('floodtime:megacreed'..chat_id, tonumber(3))
             redis:set('bot:enable:megacreed'..msg.chat_id_,true)
