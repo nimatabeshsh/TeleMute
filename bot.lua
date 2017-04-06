@@ -1835,18 +1835,18 @@ end
 	 return
 	 else
 		--------------------------- is added Group now ------------------------------
-       if (msg.content_.text_:match("^[Cc]harge (%d+)$") or msg.content_.text_:match("^(تمدید) (%d+)$")) and is_admin(msg) then
+        if (msg.content_.text_:match("^[Cc]harge (%d+)$") or msg.content_.text_:match("^(تمدید) (%d+)$")) and is_admin(msg) then
     local statstime = io.popen("curl http://api.gpmod.ir/time/"):read("*all")
 local timeFA = json.decode(statstime).FAtime
 local dateFA = json.decode(statstime).FAdate
           local day = tonumber(86400)
           local ap = {string.match(msg.content_.text_, "^(charge) (%d+)$")}
 		  local app = {string.match(msg.content_.text_, "^(تمدید) (%d+)$")}
-		  redis:set("bot:charge:time:"..msg.chat_id_ , '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂'    -- 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\nتمدید شده بود توسط :'..get_info(msg.sender_user_id)..''
+		  redis:set("bot:charge:time:"..msg.chat_id_ , 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\n تمدید شده بود توسط :\n'..get_info(msg.sender_user_id_))    -- 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\nتمدید شده بود توسط :'..get_info(msg.sender_user_id)..''
       if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then 
               text = '*Group Charged for* : '..(ap[2] or app[2])..' *Days !*'
             else
-              text = '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂'
+              text = '*گروه به مدت * : '..(ap[2] or app[2])..' *روز* \n در تاریخ : `'..dateFA..'` \nو در زمان  : [ `'..timeFA..'` ]\n*تمدید شد !*'
             end
           sendmsg(msg.chat_id_, msg.id_, 0 ,1 , nil, text, 1, 'md')
           local time = (ap[2] or app[2]) * day
