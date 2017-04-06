@@ -7802,7 +7802,6 @@ if redis:get('lock_edit:megacreed'..msg.chat_id_)then
             limit_=20
           }, dl_cb, nil)
         end
-      end
 
 --------      Mega Creed Bot ! ------------
 
