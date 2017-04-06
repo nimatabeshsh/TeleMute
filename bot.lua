@@ -750,7 +750,8 @@ function vardump(value, depth, key)
       var = true
     end
     return var
-end
+  end
+  
 
 		  
   function tdcli_update_callback(data)
@@ -7802,7 +7803,6 @@ if redis:get('lock_edit:megacreed'..msg.chat_id_)then
           }, dl_cb, nil)
         end
       end
-	end
 
 --------      Mega Creed Bot ! ------------
 
