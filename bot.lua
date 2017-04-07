@@ -762,6 +762,7 @@ function vardump(value, depth, key)
       local chat_id = msg.chat_id_
       local user_id = msg.sender_user_id_
       local reply_id = msg.reply_to_message_id_
+	        end
 
 
 
@@ -7821,7 +7822,6 @@ if redis:get('lock_edit:megacreed'..msg.chat_id_)then
             limit_=20
           }, dl_cb, nil)
         end
-      end
 
 --------      Mega Creed Bot ! ------------
 
