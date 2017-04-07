@@ -1858,7 +1858,7 @@ local dateFA = json.decode(statstime).FAdate
       if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then 
               text = '*Group Charged for* : '..(ap[2] or app[2])..' *Days !*'
             else
-              text = '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂', 1, 'md')
+              text = '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂'
             end
           sendmsg(msg.chat_id_, msg.id_, 0 ,1 , nil, text, 1, 'md')
           local time = (ap[2] or app[2]) * day
