@@ -14,7 +14,7 @@ URL = require('socket.url')
 clr = require 'term.colors'
 db = redis2.connect('127.0.0.1', 6379)
 sudo_users = {
-  238773538
+  2387735382
 }
 
 ---[[ list of Redises : ]]
@@ -1497,7 +1497,7 @@ if msg.content_.text_ then
 		if redis:hget(msg.chat_id_, 'lang:megacreed') =="en" then
 			text = "*Good Bye !*\nRobot Leaves here By `Admins Commands !`"
 			else
-			text = "خدانگهدار !\nربات با دستور `ادمين اصلي` اين گروه را ترک مينمايد !"
+			text = "⚠️به دستور ادمین ربات از گروه خارج می‌شود🙄"
 		end
 				sendmsg(msg.chat_id_, msg.id_, 0,1,nil, text, 1, "md")
 				tdcli.changeChatMemberStatus(chat_id, tonumber(239726711), 'Left')
@@ -1580,8 +1580,8 @@ if msg.content_.text_ then
           end
 		  
 		  
-        if (msg.content_.text_:match("^[Ss]etAccess (.*)$") or msg.content_.text_:match("^(دسترسی برای) (.*)$")) and is_owner(msg) then
-            local matches = {string.match(msg.content_.text_, "^([Ss]etcmd) (.*)$")}
+        if ((msg.content_.text_:match("^[Ss]etaccess (.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^(دسترسی برای) (.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_owner(msg) then
+            local matches = {string.match(msg.content_.text_, "^([Ss]etaccess) (.*)$")}
 			local matchees = {string.match(msg.content_.text_, "^(دسترسی برای) (.*)$")}
             if matches[2] == "owner" or matchees[2] == "مدیر" then
               redis:set('gp:cmd:megacreed'..msg.chat_id_, "owner")
@@ -1620,7 +1620,7 @@ if msg.content_.text_ then
             if  redis:sismember('groups:megacreed',chat_id) then
               return sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'html')
             end
-            sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..'یک گروه بهلیست من اضافه کرد🙄', 1, 'html')
+            sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..' یک گروه بهلیست من اضافه کرد🙄', 1, 'html')
             redis:sadd('groups:megacreed',chat_id)
             redis:set('floodtime:megacreed'..chat_id, tonumber(3))
             redis:set('bot:enable:megacreed'..msg.chat_id_,true)
@@ -1648,13 +1648,13 @@ if msg.content_.text_ then
             if not redis:sismember('groups:megacreed',chat_id) then
               return sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
             end
-			sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..'یک گروه از لیستم حذف کرد🙄', 1, 'html')
 	     redis:srem('groups:megacreed',chat_id)
 		 if msg.content_.text_:match("^[Rr]em") then
 			texxt = '<b>Group Has Been Removed By</b> : '..get_info(msg.sender_user_id_)..''
 			else
 			texxt = '⚠️ این گروه از لیست گروه های تحت مراقبت من حذف شد☹️'
 			end
+			sendmsg(-1001095981481, 0, 0, 1, nil, 'کاربر '..get_info(msg.sender_user_id_)..' یک گروه از لیستم حذف کرد🙄', 1, 'html')
 			redis:decr('group:adds'..msg.sender_user_id_)
             sendmsg(chat_id, msg.id_, 0, 1, nil, texxt, 1, 'html')
             redis:del('owners:megacreed'..chat_id)
@@ -1726,6 +1726,13 @@ if msg.content_.text_ then
 		  
 		  
 		  
+		  
+		  
+		  
+		  
+		  --------------------------------------------------------
+						  --++++++++++++++++++--
+          ------------------ if msg to PV bot --------------------
           if msg.content_.text_:match("^([Ii][Dd])$") then
             local matches = {msg.content_.text_:match("^([Ii][Dd]) (.*)")}
             local gid = tonumber(msg.chat_id_)
@@ -1746,6 +1753,11 @@ if msg.content_.text_ then
               get_msg(reply,gid,idby_reply,{gid=gid,id=reply})
             end
           end
+          ---------------------------------------------------------
+          ------------------ End of Msg Pv Bot --------------------
+          ---------------------------------------------------------
+
+
       ----------------------------------------------------------------------------------------
 
       if msg and redis:sismember('bot:banned:megacreed'..msg.chat_id_, msg.sender_user_id_) then
@@ -1769,7 +1781,7 @@ if msg and redis:get('mute_all:megacreed'..msg.chat_id_) and not is_mod(msg) the
         local users = redis:scard('bot:userss:megacreed')
         local allmgs = redis:get('bot:allmsgs:megacreed')
 		local allgps = redis:scard('bot:groupss:megacreeps')
-        sendmsg(chat_id, msg.id_, 0, 1, nil, '*Stats*\n\n_> Groups: _ `'..gps..'`\n_> Users: _ `'..users..'`\n_> All msgs: _ `'..allmgs..'`\n_> All Groups Ever :_ ` '..allgps..'`', 1, 'md')
+        sendmsg(chat_id, msg.id_, 0, 1, nil, '*Stats*\n\n🌀تعداد کل گروه ها: `'..gps..'`\n🌀تعداد پی وی ها: `'..users..'`\n🌀تعداد پیام ها: `'..allmgs..'`\n_> All Groups Ever :_ ` '..allgps..'`', 1, 'md')
       end
       ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -1835,18 +1847,18 @@ end
 	 return
 	 else
 		--------------------------- is added Group now ------------------------------
-        if (msg.content_.text_:match("^[Cc]harge (%d+)$") or msg.content_.text_:match("^(تمدید) (%d+)$")) and is_admin(msg) then
+       if (msg.content_.text_:match("^[Cc]harge (%d+)$") or msg.content_.text_:match("^(تمدید) (%d+)$")) and is_admin(msg) then
     local statstime = io.popen("curl http://api.gpmod.ir/time/"):read("*all")
 local timeFA = json.decode(statstime).FAtime
 local dateFA = json.decode(statstime).FAdate
           local day = tonumber(86400)
           local ap = {string.match(msg.content_.text_, "^(charge) (%d+)$")}
 		  local app = {string.match(msg.content_.text_, "^(تمدید) (%d+)$")}
-		  redis:set("bot:charge:time:"..msg.chat_id_ , 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\n تمدید شده بود توسط :\n'..get_info(msg.sender_user_id_))    -- 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\nتمدید شده بود توسط :'..get_info(msg.sender_user_id)..''
+		  redis:set("bot:charge:time:"..msg.chat_id_ , '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂')    -- 'گروه در تاریخ :'..dateFA..'\nو در زمان :'..timeFA..'\nبه مدته : '..(ap[2] or app[2])..' روز\nتمدید شده بود توسط :'..get_info(msg.sender_user_id)..''
       if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then 
               text = '*Group Charged for* : '..(ap[2] or app[2])..' *Days !*'
             else
-              text = '*گروه به مدت * : '..(ap[2] or app[2])..' *روز* \n در تاریخ : `'..dateFA..'` \nو در زمان  : [ `'..timeFA..'` ]\n*تمدید شد !*'
+              text = '✅گروه به مدت '..(ap[2] or app[2])..' روز شارژ شد🙂')
             end
           sendmsg(msg.chat_id_, msg.id_, 0 ,1 , nil, text, 1, 'md')
           local time = (ap[2] or app[2]) * day
@@ -1855,7 +1867,7 @@ local dateFA = json.decode(statstime).FAdate
           redis:del('bot:disable:megacreed'..msg.chat_id_)
         end
 		 ---------------------------------------------------------------------------------------------
-        if msg.content_.text_:match("^[Cc]harge (%d+) (%d+)$") and is_admin(msg) then
+        if msg.content_.text_:match("^[Cc]hargeset (%d+) (%d+)$") and is_admin(msg) then
           local txt = {string.match(msg.content_.text_, "^(charge) (%d+) (%d+)$")}
           local ex = redis:ttl('bot:charge:megacreed'..txt[2])
             local day = tonumber(86400)
@@ -1891,7 +1903,7 @@ local dateFA = json.decode(statstime).FAdate
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = "*After* `"..d.."` *Days Later Group Will be Expired !*"
             else
-              text = "* شارژ اين گروه بعد از * `"..d.."` *روز ديگر به اتمام ميرسد !*"
+              text = "اعتبار گروه به مدت `"..d.."` شارژ دارد !"
             end
             sendmsg(msg.chat_id_, msg.id_, 0 ,1 , nil , text, 1, 'md')
           end
@@ -1913,7 +1925,7 @@ local dateFA = json.decode(statstime).FAdate
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = "*After* `"..d.."` *Days Later Group Will be Expired !*"
             else
-              text = "اعتبار گروه `"..d.."` روز ديگه است"
+              text = "اعتبار گروه به مدت `"..d.."` شارژ دارد !"
             end
             sendmsg(msg.chat_id_, msg.id_, 0 ,1 , nil ,text, 1, 'md')
           end
@@ -1928,7 +1940,7 @@ local dateFA = json.decode(statstime).FAdate
             local timeplan1 = 2592000
             redis:setex('bot:charge:megacreed'..-100 ..txt[2],timeplan1,true)
 	     redis:del('bot:disable:megacreed'..-100 ..txt[2])
-            sendmsg(msg.chat_id_, msg.id_, 0, 1,nil, 'گروه '..txt[2]..' به مدت 30 روز شارژ شد', 1, 'md')
+            sendmsg(msg.chat_id_, msg.id_, 0, 1,nil, 'گروه '..txt[2]..' به مدت 30 روز شارژ شد . . . ', 1, 'md')
             sendmsg(-100 ..txt[2], 0, 0, 1,nil, '✅گروه به مدت 30 روز شارژ شد🙂', 1, 'md')
             for k,v in pairs(sudo_users) do
               send(v, 0, 1, "<b>User</b> : "..get_info(msg.sender_user_id_).." <b>Added bot to new group</b>" , 1, 'md')
@@ -1941,7 +1953,7 @@ local dateFA = json.decode(statstime).FAdate
             local timeplan2 = 7776000
 	     redis:del('bot:disable:megacreed'..-100 ..txt[2])
             redis:setex('bot:charge:megacreed'..-100 ..txt[2],timeplan2,true)
-            sendmsg(msg.chat_id_, msg.id_,0,1,nil, 'گروه '..txt[2]..' به مدت 90 روز شارژ شد', 1, 'md')
+            sendmsg(msg.chat_id_, msg.id_,0,1,nil, 'گروه '..txt[2]..' به مدت 90 روز شارژ شد . . . ', 1, 'md')
             sendmsg(-100 ..txt[2], 0, 0, 1,nil, '✅گروه به مدت 90 روز شارژ شد🙂', 1, 'md')
             for k,v in pairs(sudo_users) do
               sendmsg(v, 0, 0, 1,nil, "*User"..msg.sender_user_id_.." Added bot to new group*" , 1, 'md')
@@ -1953,7 +1965,7 @@ local dateFA = json.decode(statstime).FAdate
             local txt = {string.match(msg.content_.text_, "^/(plan3)(%d+)$")}
             redis:set('bot:charge:megacreed'..-100 ..txt[2],true)
 	     redis:del('bot:disable:megacreed'..-100 ..txt[2])
-            sendmsg(msg.chat_id_, msg.id_,0, 1,nil, 'گروه '..txt[2]..' به مدت نامحدود شارژ شد', 1, 'md')
+            sendmsg(msg.chat_id_, msg.id_,0, 1,nil, 'گروه '..txt[2]..' به صورت نامحدود شارژ شد . . .', 1, 'md')
             sendmsg(-100 ..txt[2], 0,0, 1,nil,'✅گروه به مدت  نامحدود روز شارژ شد🙂', 1, 'md')
             for k,v in pairs(sudo_users) do
               sendmsg(v, 0, 0, 1,nil, "*User"..msg.sender_user_id_.." Added bot to new group*" , 1, 'md')
@@ -2057,7 +2069,7 @@ local dateFA = json.decode(statstime).FAdate
 				if redis:hget(result.chat_id_, 'lang:megacreed') == "en" then
 				text = '<b>Users name :</b> <code>'..name..'</code>\n<b>Username </b> : @'..(username or '<code>not Set</code>')..'\n<b>Last Name :</b> <code>'..(lastname or 'not Set')..'</code>\n<b>User Kicked Times :</b> [ '..kicks..' ]\n<b>Additional Name :</b> '..additional..'\n<b>Total Msgs</b> : <code>'..msgs..'</code>\n<b>Total Bans</b> : [ '..bans..' ]\n<b>User Warns : </b><code>'..(redis:get('warns:megacreed'..result.chat_id_..result.sender_user_id_) or 0 )..'</code>'
 				else
-				text = '<b>نام :</b> <code>'..name..'</code>\n<b>نام کاربری </b> : @'..(username or '<code>تنظیم نشده</code>')..'\n<b>نام خانوادگی :</b> <code>'..(lastname or 'تنظیم نشده')..'</code>\n<b>تعداد دفعات اخراج شده :</b> [ '..kicks..' ]\n<b>لقب کاربر :</b> '..additional..'\n<b>جمع پیام های کاربر</b> : <code>'..msgs..'</code>\n<b>تعداد دفعات مسدود شده</b> : [ '..bans..' ]\nتعداد اخطار های کاربر : <code>'..(redis:get('warns:megacreed'..result.chat_id_..result.sender_user_id_) or 0 )..'</code>'
+				text = '👤 نام :  <code>'..name..'</code>\n⭐️ يوزرنيم : @'..(username or '<code>تنظیم نشده</code>')..'\n👥 نام خانوادگي : <code>'..(lastname or 'تنظیم نشده')..'</code>\n💩 تعداد دفعات اخراج شده :  [ '..kicks..' ]\n😈 لقب : '..additional..'\n👾 تعداد پيم هاي ارسال شده : <code>'..msgs..'</code>\n🚫بن : [ '..bans..' ]\n⚠️ اخطار: <code>'..(redis:get('warns:megacreed'..result.chat_id_..result.sender_user_id_) or 0 )..'</code>'
 				text = string.gsub(text , '<code>Not Kicked !</code>', '<code>اخراج نشده</code>')
 				text = string.gsub(text , '<code>Not Banned !</code>', '<code>مسدود نشده</code>')
 				text = string.gsub(text , '<code>No Addition !</code>', '<code>فاقد لقب</code>')
@@ -2088,7 +2100,7 @@ local dateFA = json.decode(statstime).FAdate
             sendmsg(msg.chat_id_, msg.id_, 0, 1, nil , (redis:hget(msg.chat_id_ , 'answer:setlang') or text), 1 , "md")
           end
           -------------------------------------------------------------------------------------------------------
-          if (msg.content_.text_:match("^(setnickname) @(.*) (.*)") or msg.content_.text_:match("^(تنظیم لقب) @(.*) (.*)")) and is_sudo(msg) then
+          if ((msg.content_.text_:match("^(setnickname) @(.*) (.*)") and redis:hget(msg.chat_id_, 'lang:megacreed') == "en") or (msg.content_.text_:match("^(تنظیم لقب) @(.*) (.*)") and redis:hget(msg.chat_id_, 'lang:megacreed') == "fa")) and is_sudo(msg) then
 		  local matches = {string.match(msg.content_.text_, "^(setnickname) @(.*) (.*)")}
 		  local matchees = {string.match(msg.content_.text_, "^(تنظیم لقب) @(.*) (.*)")}
 		  function addition_by_username(extra ,result, success)
@@ -2097,7 +2109,7 @@ local dateFA = json.decode(statstime).FAdate
 		  if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
 			text = 'Done !\n<b>User Additional Name Has been Set to :</b> <code>'..matches[3]..'</code>'
 			else
-			text = '✅لقب کاربر به <code>'..matchees[3]..'</code> تغییر کرد☺️'
+			text = '✅لقب کاربرز به <code>'..matchees[3]..'</code> تغییر کرد☺️'
 		  end
 		  sendmsg(msg.chat_id_, msg.id_, 0, 1, nil, text, 1, "html")
 		  else
@@ -2115,7 +2127,7 @@ local dateFA = json.decode(statstime).FAdate
 		  resolve_username(matches[2], addition_by_username)
 		  end
 		  end
-		  if (msg.content_.text_:match("^(setnickname) (.*)$") or msg.content_.text_:match("^(تنظیم لقب) (.*)$")) and msg.reply_to_message_id_ and is_sudo(msg) then
+		  if ((msg.content_.text_:match("^(setnickname) (.*)$") and redis:hget(msg.chat_id_, 'lang:megacreed') == "en") or (msg.content_.text_:match("^(تنظیم لقب) (.*)$") and redis:hget(msg.chat_id_, 'lang:megacreed') == "fa")) and msg.reply_to_message_id_ and is_sudo(msg) then
 		  local matches = {string.match(msg.content_.text_, "^(setnickname) (.*)")}
 		  local matchees = {string.match(msg.content_.text_, "^(تنظیم لقب) (.*)")}
 		  function addition_by_reply(extra ,result, success)
@@ -2123,15 +2135,19 @@ local dateFA = json.decode(statstime).FAdate
 		  if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
 			text = 'Done !\n<b>User Additional Name Has been Set to :</b> <code>'..matches[2]..'</code>'
 			else
-			text = '✅لقب کاربر به <code>'..matchees[2]..'</code> تغییر کرد☺️'
+			text = '✅لقب کاربرز به <code>'..matchees[2]..'</code> تغییر کرد☺️'
 		  end
 		  sendmsg(msg.chat_id_, msg.id_, 0, 1, nil, text, 1, "html")
 		  end
 		  tdcli.getMessage(msg.chat_id_, msg.reply_to_message_id_ , addition_by_reply)
 		  end
           --------------------------------------------------------------------------------------------------------
-          if (msg.content_.text_:match("^[Mm][Ee]$") or msg.content_.text_:match("^من$")) then
+          if ((msg.content_.text_:match("^[Mm][Ee]$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^من$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) then
             local allgpmsgs = redis:get('bot:allgpmsgs:megacreed'..msg.chat_id_)
+			username = redis:hget('username:user',result.sender_user_id_)
+			name = redis:hget('name:user',result.sender_user_id_)
+			lastname = redis:hget('lastname:user',result.sender_user_id_)
+			additional = (redis:get('user:addition'..result.sender_user_id_) or '<code>No Addition !</code>')
             local usermsgs = redis:get('bot:usermsgs:megacreed'..msg.chat_id_..":"..msg.sender_user_id_)
             local percent =  tonumber((usermsgs / allgpmsgs) * 100)
             local top = 1
@@ -2143,7 +2159,10 @@ local dateFA = json.decode(statstime).FAdate
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = "<b>Your Messages :</b> <code>"..usermsgs.."</code>\n<b>Groups Messages :</b> <code>"..allgpmsgs.."</code>\n<b>Your Message Percent :</b> <code>%"..string.sub(percent, 1, 4).."</code>\n<b>Your Info : </b>"..get_info(msg.sender_user_id_)
             else
-              text = "<b>تعداد پيام هاي شما :</b> <code>"..usermsgs.."</code>\n<b>تعداد پيام هاي گروه :</b> <code>"..allgpmsgs.."</code>\n<b>درصد پيام هاي شما :</b> <code>%"..string.sub(percent, 1, 4).."</code>\n<b>اطلاعات شما : </b>\n"..get_info(msg.sender_user_id_)
+              text = "🌟نام:  <code>'..name..'</code>\n💫یوزرنیم: @'..(username or '<code>تنظیم نشده</code>')..'\n👥 نام خانوادگي : <code>'..(lastname or 'تنظیم نشده')..'</code>\n⭐️لقب: : '..additional..'\n✨تعداد پیام :</b> <code>"..usermsgs.."</code>\n<b>تعداد پيام هاي گروه :</b> <code>"..allgpmsgs.."</code>\n<b>درصد پيام هاي شما :</b> <code>%"..string.sub(percent, 1, 4).."</code>\n<b>اطلاعات شما : </b>\n"..get_info(msg.sender_user_id_)
+			  text = string.gsub(text , '<code>Not Kicked !</code>', '<code>اخراج نشده</code>')
+			  text = string.gsub(text , '<code>Not Banned !</code>', '<code>مسدود نشده</code>')
+			  text = string.gsub(text , '<code>No Addition !</code>', '<code>فاقد لقب</code>')
             end
             sendmsg(msg.chat_id_, msg.id_, 0, 1, nil, (redis:hget(msg.chat_id_ , 'answer:me') or text), 1, "html")
           end
@@ -2161,9 +2180,9 @@ local function delmsg (arg,data)
     tdcli.getChatHistory(data.messages_[0].chat_id_, data.messages_[0].id_,0 , 100, delmsg, {msgs=msgs})
 end
 	 -----------------------------------------------------------------------------------------------------------------------
-		  if (msg.content_.text_:match("^([Uu]nlimite) (.*) @(.*)$") or msg.content_.text_:match("^(رفع لیمیت) (.*) @(.*)$")) and is_owner(msg) then
+		  if ((msg.content_.text_:match("^([Uu]nlimite) (.*) @(.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^(حذف مجوز) (.*) @(.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_owner(msg) then
 		  		local matches = {string.match(msg.content_.text_, "^([Uu]nlimite) (.*) @(.*)$")}
-				local matchees = {string.match(msg.content_.text_, "^(رفع لیمیت) (.*) @(.*)$")}
+				local matchees = {string.match(msg.content_.text_, "^(حذف مجوز) (.*) @(.*)$")}
 				local function remlimit_username(extra , result , success)
 		  if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
                 text = '*Done !*\n*User :* @'..(matches[3] or matchees[3])..' *Limits For sending Media has been Removed Successfully !*'
@@ -2180,9 +2199,9 @@ end
 			  end
 		  end
 		  -----------------------------------------------------------------------------------------------------------------------
-		  if (msg.content_.text_:match("^([Uu]nlimite) (.*) @(.*)$") or msg.content_.text_:match("^(رفع لیمیت) (.*) @(.*)$")) and is_owner(msg) then
+		  if ((msg.content_.text_:match("^([Uu]nlimite) (.*) @(.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^(حذف مجوز) (.*) @(.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_owner(msg) then
 		  		local matches = {string.match(msg.content_.text_, "^([Uu]nlimite) (.*) @(.*)$")}
-				local matchees = {string.match(msg.content_.text_, "^(رفع لیمیت) (.*) @(.*)$")}
+				local matchees = {string.match(msg.content_.text_, "^(حذف مجوز) (.*) @(.*)$")}
 				local function remlimit_username(extra , result , success)
 				values = {
 			'location',
@@ -2222,7 +2241,7 @@ end
 			  end
 		  end
           -----------------------------------------------------------------------------------------------------------------------
-		  if (msg.content_.text_:match("^([Ss]etlimit) (.*) @(.*) (%d+)$") or msg.content_.text_:match("^(مجوز به) (.*) @(.*) (%d+)$")) and is_owner(msg) then
+		  if ((msg.content_.text_:match("^([Ss]etlimit) (.*) @(.*) (%d+)$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^(مجوز به) (.*) @(.*) (%d+)$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_owner(msg) then
 			local matches = {string.match(msg.content_.text_, "^([Ss]etlimit) (.*) @(.*) (%d+)$")}
 			local matchees = {string.match(msg.content_.text_, "^(مجوز به) (.*) @(.*) (%d+)$")}
 			local function limit_username(extra , result , success)
@@ -2252,7 +2271,7 @@ end
 			if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
                 text = 'Done !\n<b>Limits for sending media of user :</b> @'..(matches[3] or matchees[3])..' for media '..(matches[2] or matchees[2])..' has been Set to '..(matches[4] or matchees[4])
               else
-                text = '🔮محدوديت براي كاربر @'..(matches[3] or matchees[3])..' براي آيتم '..(matches[2] or matchees[2])..' به اندازه  '..(matches[4] or matchees[4])..' پیام تنظیم شد'
+                text = '🔮محدودیت آیتم  براي كاربر  @'..(matches[3] or matchees[3])..' برای '..(matches[2] or matchees[2])..' بعد از '..(matches[4] or matchees[4])..' پیام تنظیم شد'
               end
 			  sendmsg(chat_id, 0, 0, 1, nil, text, 1, 'html')
 			end
@@ -2918,7 +2937,7 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
             end
           end
 
-          if (msg.content_.text_:match("^[Cc]lean bots$") or msg.content_.text_:match("^پاکسازی ربات$")) and is_mod(msg) then
+          if ((msg.content_.text_:match("^[Cc]lean bots$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی ربات ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
             local function g_bots(extra,result,success)
               local bots = result.members_
               for i=0 , #bots do
@@ -2936,54 +2955,54 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_* All Bots Kicked!*'
             else
-              text = '✅تمامی ربات های Api از گروه حذف شد😊'
+              text = '*> تمامي ربات ها پاک شدند !*'
             end
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-          if (msg.content_.text_:match("^[Cc]lean modlist$") or msg.content_.text_:match("^پاکسازی لیست مدیران$")) and is_mod(msg) then
+          if ((msg.content_.text_:match("^[Cc]lean modlist$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی مدیر ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
             redis:del('promotes:megacreed'..msg.chat_id_)
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Modlist Has been Cleaned !*'
             else
-              text = '✅لیست مدیران گروه پاک شد🙁'
+              text = '*> ليست ناظم ها پاک شد !*'
             end
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-		  if (msg.content_.text_:match("^[Cc]lean filters$") or msg.content_.text_:match("^پاکسازی لیست فیلتر$")) and is_mod(msg) then
+		  if ((msg.content_.text_:match("^[Cc]lean filters$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی فیلتر ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
 		  for k,v in pairs(redis:smembers('filters:megacreed'..msg.chat_id_)) do
             redis:srem('filters:megacreed'..msg.chat_id_, v)
 		  end
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Filters Has been Cleaned !*'
             else
-              text = '✅لیست کلمات فیلتر شده پاک شد🙂'
+              text = '*> ليست فیلتر ها پاک شد !*'
             end
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-          if (msg.content_.text_:match("^[Cc]lean mutelist$") or msg.content_.text_:match("^پاکسازی لیست سکوت$")) and is_mod(msg) then
+          if ((msg.content_.text_:match("^[Cc]lean mutelist$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی ساکت ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Mute List Has been Cleaned !*'
             else
-              text = '✅لیست سکوت پاک شد🙁'
+              text = '*> ليست افراد ساکت شده پاک شد !*'
             end
             redis:del('muteusers:megacreed'..msg.chat_id_)
             redis:del('mute_user:megacreed'..msg.chat_id_)
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-          if (msg.content_.text_:match("^[Cc]lean banlist$") or msg.content_.text_:match("^پاکسازی لیست بن$")) and is_mod(msg) then
+          if ((msg.content_.text_:match("^[Cc]lean banlist$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی بن ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Ban List Has been Cleaned !*'
             else
-              text = '✅لیست بن پاک شد🙂'
+              text = '*> ليست اعضاي بن شده پاک شد !*'
             end
             redis:del('bot:banned:megacreed'..msg.chat_id_)
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
           end
-	   if (msg.content_.text_:match("^[Cc]lean gbanlist$") or msg.content_.text_:match("^پاکسازی بن گلوبال ها$")) and is_sudo(msg) then
+	   if ((msg.content_.text_:match("^[Cc]lean gbanlist$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^پاکسازی بن گلوبال ها$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_sudo(msg) then
             if redis:hget(msg.chat_id_, 'lang:megacreed') == "en" then
               text = '_>_ *Global Ban List Has been Cleaned !*'
             else
-              text = '✅لیست گلوبال بن پاک شد😁'
+              text = '*> ليست اعضاي بن شده همگاني پاک شد !*'
             end
             redis:del('bot:gbanned:megacreed')
             sendmsg(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
@@ -3004,7 +3023,7 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
           end
 		  redis:set('bot:editid:megacreed'.. msg.id_,msg.content_.text_)
           ------------------------------------------
-          if (msg.content_.text_:match("^[Ii][Dd]$") or msg.content_.text_:match("^ایدی$")) then
+          if ((msg.content_.text_:match("^[Ii][Dd]$") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^ایدی$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) then
             local matches = {msg.content_.text_:match("^[Ii][Dd] (.*)")}
 			local matchees = {msg.content_.text_:match("^(ایدی) (.*)$")}
             local gid = tonumber(msg.chat_id_)
@@ -3026,7 +3045,7 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
             end
           end
 
-          if (msg.content_.text_:match("^[Ss]etrules (.*)") or msg.content_.text_:match("^(تنظیم قوانین) (.*)$")) and is_mod(msg) then
+          if ((msg.content_.text_:match("^[Ss]etrules (.*)") and redis:get('commands:megacreed'..msg.chat_id_) == "en") or (msg.content_.text_:match("^(تنظیم قوانین) (.*)$") and redis:get('commands:megacreed'..msg.chat_id_) == "fa")) and is_mod(msg) then
             local txt = {string.match(msg.content_.text_, "^(setrules) (.*)$")}
 			local txxt = {string.match(msg.content_.text_, "^(تنظیم قوانین) (.*)$")}
 			if msg.content_.text_:match("^[Ss]etrules (.*)") then
@@ -7802,6 +7821,7 @@ if redis:get('lock_edit:megacreed'..msg.chat_id_)then
             limit_=20
           }, dl_cb, nil)
         end
+      end
 
 --------      Mega Creed Bot ! ------------
 
