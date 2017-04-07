@@ -1454,11 +1454,11 @@ if redis:get('setlock:megacreed'..msg.chat_id_) == "kick" then
 		  end
 		  
     if msg.content_.ID == "MessageText"  then
-	
+	end
 	
 	  -------------------------------------------------
 if msg.content_.text_ then
-
+end
  --------------------------------------------------
  if msg.content_.text_:match("^[Ss]ign on$") and is_sudo(msg) then
  if redis:get('sign:mod:megacreed') then
